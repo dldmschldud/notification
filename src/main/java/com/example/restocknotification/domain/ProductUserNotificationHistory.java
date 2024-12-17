@@ -2,14 +2,15 @@ package com.example.restocknotification.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
-public class ProductUserNotificationHistory {
+@NoArgsConstructor
+public class ProductUserNotificationHistory {//상품 + 유저별 알림 히스토리
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +23,18 @@ public class ProductUserNotificationHistory {
 
     private LocalDateTime sentAt = LocalDateTime.now();
 
+    private int restockRound;
+
+    public ProductUserNotificationHistory(Long user_id, Product product, LocalDateTime sentAt,int restockRound) {
+        this.user_id = user_id;
+        this.product = product;
+        this.sentAt = sentAt;
+        this.restockRound = restockRound;
+
+    }
+    public ProductUserNotificationHistory create(Product product,Long user_id){
+
+        return new ProductUserNotificationHistory(user_id,product,LocalDateTime.now(),product.getRestockRound());
+
+    }
 }
